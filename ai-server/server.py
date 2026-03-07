@@ -30,7 +30,7 @@ def predict():
     if output > 0.70:
         result = "Wild"
 
-    elif output < 0.01:
+    elif output < 0.0005:
         result = "NonWild"
 
     else:
@@ -45,3 +45,4 @@ if __name__ == "__main__":
     port = int(os.environ.get("PORT", 10000))
 
     app.run(host="0.0.0.0", port=port)
+
