@@ -1,8 +1,23 @@
+import os
+import json
+import firebase_admin
+from firebase_admin import credentials, firestore
+from datetime import datetime
 from flask import Flask, request, jsonify
 import tensorflow as tf
 import numpy as np
 from PIL import Image
 import os
+
+firebase_json = os.environ.get("FIREBASE_KEY")
+
+firebase_dict = json.loads(firebase_json)
+
+cred = credentials.Certificate(firebase_dict)
+
+firebase_admin.initialize_app(cred)
+
+db = firestore.client()
 
 app = Flask(__name__)
 
@@ -41,8 +56,16 @@ def predict():
         "confidence": float(output)
     })
 
+db.collection("detections").add({
+    "device_id": "FieldCam01",
+    "prediction": result,
+    "confidence": float(output),
+    "timestamp": datetime.now()
+})
+
 if __name__ == "__main__":
     port = int(os.environ.get("PORT", 10000))
 
     app.run(host="0.0.0.0", port=port)
+
 
