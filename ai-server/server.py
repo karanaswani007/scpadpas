@@ -51,21 +51,24 @@ def predict():
     else:
         result = "NoAnimal"
 
+    db.collection("detections").add({
+    "device_id": "FieldCam01",
+    "prediction": result,
+    "confidence": float(output),
+    "timestamp": datetime.now()
+    })
+
     return jsonify({
         "prediction": result,
         "confidence": float(output)
     })
 
-db.collection("detections").add({
-    "device_id": "FieldCam01",
-    "prediction": result,
-    "confidence": float(output),
-    "timestamp": datetime.now()
-})
+
 
 if __name__ == "__main__":
     port = int(os.environ.get("PORT", 10000))
 
     app.run(host="0.0.0.0", port=port)
+
 
 
