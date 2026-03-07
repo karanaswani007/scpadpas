@@ -27,10 +27,14 @@ def predict():
 
     output = interpreter.get_tensor(output_details[0]["index"])[0][0]
 
-    if output > 0.5:
+    if output > 0.70:
         result = "Wild"
-    else:
+
+    elif output < 0.01:
         result = "NonWild"
+
+    else:
+        result = "NoAnimal"
 
     return jsonify({
         "prediction": result,
@@ -39,4 +43,5 @@ def predict():
 
 if __name__ == "__main__":
     port = int(os.environ.get("PORT", 10000))
+
     app.run(host="0.0.0.0", port=port)
