@@ -3,3 +3,4 @@ numpy
 pillow
 tensorflow==2.13.0
 gunicorn
+firebase-admin
